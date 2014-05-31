@@ -9,19 +9,14 @@ function updateSubtitle() {
 
 function updateBody() {
     //ランダムでヱヴァンゲリヲン新劇場版のサブタイトルを表示
-    var rand = Math.floor(Math.random() * 3);
-    var eva;
-    if (rand == 0) {
-        eva = "You are (not) alone.";
-    }
-    else if (rand == 1) {
-        eva = "You can (not) advance.";
-    }
-    else {
-        eva = "You can (not) redo.";
-    }
+    var evaTitles=new Array(
+        "You are (not) alone.",
+        "You can (not) advance.",
+        "You can (not) redo.");
 
-    simply.body(util2.format(eva, $status));
+    var rand = Math.floor(Math.random() * 3);
+
+    simply.body(util2.format(evaTitles[rand], $status));
 }
 
 function zeroFill(num, fill) {
@@ -44,8 +39,8 @@ function timeText() {
 
 $tasks =
     {
+        //SGD円相場
         sgdjpy: function () {
-            //SGD円相場
             ajax({ url: 'http://stocks.finance.yahoo.co.jp/stocks/detail/?code=sgdjpy%3Dx' },
                 function (data) {
                     $status.sgdjpy = Number(data.match(/<td class="stoksPrice">(.*?)<\/td>/)[1]).toFixed(2);
