@@ -1,9 +1,10 @@
 $status = {
-    sgdjpy: "xx.xx"
+    sgdjpy: "xx.xx",
+    hightemp:"xx"
 };
 
 function updateSubtitle() {
-    var fmt = "JPY: $sgdjpy";
+    var fmt = "SGD: $sgdjpy\nHIGHTEMP: $hightemp";
     simply.subtitle(util2.format(fmt, $status));
 }
 
@@ -24,7 +25,6 @@ function zeroFill(num, fill) {
     return (padd + num).slice(-fill);
 }
 
-//日付と時刻
 function timeText() {
     var now = new Date();
     var n =
@@ -44,6 +44,15 @@ $tasks =
             ajax({ url: 'http://stocks.finance.yahoo.co.jp/stocks/detail/?code=sgdjpy%3Dx' },
                 function (data) {
                     $status.sgdjpy = Number(data.match(/<td class="stoksPrice">(.*?)<\/td>/)[1]).toFixed(2);
+                    updateSubtitle();
+                });
+        },
+
+        //シンガポール最高気温
+        temp: function () {
+            ajax({ url: 'http://www.tenki.jp/world/4/79/48698.html' },
+                function (data) {
+                    $status.hightemp = data.match(/<td class="forecast_days_temperature_max_temp highTemp"><span class="forecast_days_temperature_max_temp_numeric">(.*?)<\/span>/)[1];
                     updateSubtitle();
                 });
         }
